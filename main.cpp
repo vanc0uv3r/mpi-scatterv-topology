@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
     if (my_rank == 0)
     {
         int k = 0;
-        for (int i = 1; i < 16; i++)
+        for (int i = 1; i < MATX_SIZE * MATX_SIZE; i++)
         {
             for (int j = 1; j <= i; j++)
             {
