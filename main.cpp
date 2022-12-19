@@ -66,21 +66,21 @@ int main(int argc, char *argv[])
             }
         }
         coords = map_d[my_rank];
-        MPI_ISend(payload, 120 , MPI_INT, map_r[coords.first][coords.second + 1], 1, new_communicator);
-        MPI_ISend(payload, 120 , MPI_INT, map_r[coords.first + 1][coords.second], 1, new_communicator);
+        MPI_Isend(payload, PAYLOAD_SIZE , MPI_INT, map_r[coords.first][coords.second + 1], 1, new_communicator);
+        MPI_Isend(payload, PAYLOAD_SIZE , MPI_INT, map_r[coords.first + 1][coords.second], 1, new_communicator);
     }
     else
     {
         int *my_buff = new int[my_rank];
         MPI_Status status;
-        MPI_Recv(payload, 120, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, new_communicator, &status);
+        MPI_Recv(payload, PAYLOAD_SIZE, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, new_communicator, &status);
         
         coords = map_d[my_rank];
         if (coords.second == 0 && coords.first < MATX_SIZE) 
-            MPI_ISend(payload, 120, MPI_INT, map_r[coords.first + 1][coords.second], 1, new_communicator);
+            MPI_Isend(payload, PAYLOAD_SIZE, MPI_INT, map_r[coords.first + 1][coords.second], 1, new_communicator);
         
         if (coords.second < MATX_SIZE)
-            MPI_ISend(payload, 120, MPI_INT, map_r[coords.first][coords.second + 1], 1, new_communicator);
+            MPI_Isend(payload, PAYLOAD_SIZE, MPI_INT, map_r[coords.first][coords.second + 1], 1, new_communicator);
 
         memcpy(my_buff, payload + ((my_rank - 1) * (my_rank) / 2), my_rank * 4);
         
